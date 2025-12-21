@@ -65,8 +65,7 @@ void display_data(struct Restaurant restaurant_locations[], int number_of_rows) 
         "Votes"
     );
 
-    for (int i = 0; i < number_of_rows; i++)
-    {
+    for (int i = 0; i < number_of_rows; i++) {
         printf("%-25s %-18s %10d %-20s %6d %6f %-12s %6d\n",
             restaurant_locations[i].title,
             restaurant_locations[i].city,
@@ -79,19 +78,6 @@ void display_data(struct Restaurant restaurant_locations[], int number_of_rows) 
         );
     }
 }
-
-const int TOTAL_ROWS = 7369;
-
-const char* HEADERS[8] = {
-    "Restaurant Name",
-    "City",
-    "Cost for two",
-    "Currency",
-    "Price range",
-    "Rating",
-    "Rating text",
-    "Votes"
-};
 
 int choose_column_index() {
     char column[101];
@@ -114,6 +100,19 @@ int choose_column_index() {
 
     return header_index;
 }
+
+const int TOTAL_ROWS = 7369;
+
+const char* HEADERS[8] = {
+    "Restaurant Name",
+    "City",
+    "Cost for two",
+    "Currency",
+    "Price range",
+    "Rating",
+    "Rating text",
+    "Votes"
+};
 
 int main(int) {
     FILE* fp = fopen("./restaurant.csv", "r");
