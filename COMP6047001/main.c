@@ -125,9 +125,9 @@ int main(int) {
 
     struct Restaurant restaurant_locations[TOTAL_ROWS];
 
-    int count_row = 0;
-
     fscanf(fp, "%*[^\n]\n");
+
+    int count_row = 0;
 
     while (
         count_row < TOTAL_ROWS &&
@@ -245,15 +245,15 @@ int main(int) {
 
         struct Restaurant sorted_restaurant[TOTAL_ROWS];
 
-        for (int i = 0; i < count_row; i++) {
+        for (int i = 0; i < TOTAL_ROWS; i++) {
             sorted_restaurant[i] = restaurant_locations[i];
         }
 
         int sort_ascending = strcmp(sort_option, "asc") == 0;
 
         // alphabetical / numerical sorting
-        for (int i = 0; i < count_row - 1; i++) {
-            for (int j = i + 1; j < count_row; j++) {
+        for (int i = 0; i < TOTAL_ROWS - 1; i++) {
+            for (int j = i + 1; j < TOTAL_ROWS; j++) {
                 if (compare_restaurants(
                     sorted_restaurant[i],
                     sorted_restaurant[j],
@@ -266,7 +266,7 @@ int main(int) {
             }
         }
 
-        display_data(sorted_restaurant, count_row);
+        display_data(sorted_restaurant, TOTAL_ROWS);
     }
     // export
     else if (input == 4) {
