@@ -23,3 +23,6 @@ CMakeUserPresets.json
 build
 
 .~lock*
+
+.*.csv
+main
