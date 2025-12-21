@@ -117,6 +117,12 @@ int choose_column_index() {
 
 int main(int) {
     FILE* fp = fopen("./restaurant.csv", "r");
+
+    if (fp == NULL) {
+        printf("ERROR: cannot open ./restaurant.csv");
+        return 1;
+    }
+
     struct Restaurant restaurant_locations[TOTAL_ROWS];
 
     int count_row = 0;
@@ -274,6 +280,11 @@ int main(int) {
         }
 
         FILE* fexport = fopen(filename, "w");
+
+        if (fexport == NULL) {
+            printf("ERROR: cannot open %s\n", filename);
+            return 1;
+        }
 
         for (int i = 0; i < TOTAL_ROWS; i++) {
             fprintf(fexport, "%s,%s,%d,%s,%d,%f,%s,%d\n",
