@@ -28,40 +28,40 @@ const char* HEADERS[8] = {
     "Votes"
 };
 
-int compare_restaurants(const struct Restaurant *a, const struct Restaurant *b, int column, int ascending) {
+int compare_restaurants(struct Restaurant a, struct Restaurant b, int column, int ascending) {
     int result = 0;
 
     // restaurant name
     if (column == 0) {
-        result = strcmp(a->title, b->title);
+        result = strcmp(a.title, b.title);
     }
     // city
     else if (column == 1) {
-        result = strcmp(a->city, b->city);
+        result = strcmp(a.city, b.city);
     }
     // cost for two
     else if (column == 2) {
-        result = (a->cost_for_two > b->cost_for_two) - (a->cost_for_two < b->cost_for_two);
+        result = (a.cost_for_two > b.cost_for_two) - (a.cost_for_two < b.cost_for_two);
     }
     // currency
     else if (column == 3) {
-        result = strcmp(a->currency, b->currency);
+        result = strcmp(a.currency, b.currency);
     }
     // price range
     else if (column == 4) {
-        result = (a->price_range > b->price_range) - (a->price_range < b->price_range);
+        result = (a.price_range > b.price_range) - (a.price_range < b.price_range);
     }
     // rating
     else if (column == 5) {
-        result = (a->rating > b->rating) - (a->rating < b->rating);
+        result = (a.rating > b.rating) - (a.rating < b.rating);
     }
     // rating text
     else if (column == 6) {
-        result = strcmp(a->rating_text, b->rating_text);
+        result = strcmp(a.rating_text, b.rating_text);
     }
     // votes
     else if (column == 7) {
-        result = (a->votes > b->votes) - (a->votes < b->votes);
+        result = (a.votes > b.votes) - (a.votes < b.votes);
     }
 
     return ascending ? result : -result;
@@ -273,8 +273,8 @@ int main(int) {
         for (int i = 0; i < TOTAL_ROWS - 1; i++) {
             for (int j = i + 1; j < TOTAL_ROWS; j++) {
                 if (compare_restaurants(
-                    &sorted_restaurant[i],
-                    &sorted_restaurant[j],
+                    sorted_restaurant[i],
+                    sorted_restaurant[j],
                     header_index, sort_ascending) > 0
                 ) {
                     struct Restaurant temp = sorted_restaurant[i];
