@@ -67,7 +67,7 @@ void display_data(struct Restaurant restaurant_locations[], int number_of_rows) 
 
     for (int i = 0; i < number_of_rows; i++)
     {
-        printf("%-25s %-18s %10d %-20s %6d %6.1f %-12s %6d\n",
+        printf("%-25s %-18s %10d %-20s %6d %6f %-12s %6d\n",
             restaurant_locations[i].title,
             restaurant_locations[i].city,
             restaurant_locations[i].cost_for_two,
@@ -115,8 +115,7 @@ int choose_column_index() {
     return header_index;
 }
 
-int main(int)
-{
+int main(int) {
     FILE* fp = fopen("./restaurant.csv", "r");
     struct Restaurant restaurant_locations[TOTAL_ROWS];
 
@@ -249,13 +248,48 @@ int main(int)
         // alphabetical / numerical sorting
         for (int i = 0; i < count_row - 1; i++) {
             for (int j = i + 1; j < count_row; j++) {
-                if (compare_restaurants(sorted_restaurant[i], sorted_restaurant[j], header_index, sort_ascending) > 0) {
+                if (compare_restaurants(
+                    sorted_restaurant[i],
+                    sorted_restaurant[j],
+                    header_index, sort_ascending) > 0
+                ) {
                     struct Restaurant temp = sorted_restaurant[i];
                     sorted_restaurant[i] = sorted_restaurant[j];
                     sorted_restaurant[j] = temp;
                 }
             }
         }
+
         display_data(sorted_restaurant, count_row);
+    }
+    // export
+    else if (input == 4) {
+        char filename[101];
+
+        printf("File name: ");
+        scanf("%[^\n]", filename); getchar();
+
+        if (strlen(filename) + 4 < 100) {
+            strcat(filename, ".csv");
+        }
+
+        FILE* fexport = fopen(filename, "w");
+
+        for (int i = 0; i < TOTAL_ROWS; i++) {
+            fprintf(fexport, "%s,%s,%d,%s,%d,%f,%s,%d\n",
+                restaurant_locations[i].title,
+                restaurant_locations[i].city,
+                restaurant_locations[i].cost_for_two,
+                restaurant_locations[i].currency,
+                restaurant_locations[i].price_range,
+                restaurant_locations[i].rating,
+                restaurant_locations[i].rating_text,
+                restaurant_locations[i].votes
+            );
+        }
+
+        printf("Data successfully written to file %s!\n", filename);
+
+        fclose(fexport);
     }
 }
