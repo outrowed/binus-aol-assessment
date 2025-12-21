@@ -93,6 +93,28 @@ const char* HEADERS[8] = {
     "Votes"
 };
 
+int choose_column_index() {
+    char column[101];
+
+    int found = 0;
+    int header_index = 0;
+
+    while (found == 0) {
+        printf("Choose column: ");
+
+        scanf("%[^\n]", column); getchar();
+        
+        for (int i = 0; i < 8; i++) {
+            if (strcmp(HEADERS[i], column) == 0) {
+                found = 1;
+                header_index = i;
+            }
+        }
+    }
+
+    return header_index;
+}
+
 int main(int)
 {
     FILE* fp = fopen("./restaurant.csv", "r");
@@ -152,23 +174,7 @@ int main(int)
     }
     // search data
     else if (input == 2) {
-        char column[101];
-
-        int found = 0;
-        int header_index = 0;
-
-        while (found == 0) {
-            printf("Choose column: ");
-
-            scanf("%[^\n]", column); getchar();
-            
-            for (int i = 0; i < 8; i++) {
-                if (strcmp(HEADERS[i], column) == 0) {
-                    found = 1;
-                    header_index = i;
-                }
-            }
-        }
+        int header_index = choose_column_index();
 
         if (header_index == 2
             || header_index == 4
@@ -217,23 +223,7 @@ int main(int)
         display_data(filtered_restaurant, filtered_count);
     }
     else if (input == 3) {
-        char column[101];
-
-        int found = 0;
-        int header_index = 0;
-
-        while (found == 0) {
-            printf("Choose column: ");
-
-            scanf("%[^\n]", column); getchar();
-            
-            for (int i = 0; i < 8; i++) {
-                if (strcmp(HEADERS[i], column) == 0) {
-                    found = 1;
-                    header_index = i;
-                }
-            }
-        }
+        int header_index = choose_column_index();
 
         char sort_option[5];
 
