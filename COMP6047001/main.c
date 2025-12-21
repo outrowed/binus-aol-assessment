@@ -28,40 +28,40 @@ const char* HEADERS[8] = {
     "Votes"
 };
 
-int compare_restaurants(struct Restaurant a, struct Restaurant b, int column, int ascending) {
+int compare_restaurants(const struct Restaurant *a, const struct Restaurant *b, int column, int ascending) {
     int result = 0;
 
     // restaurant name
     if (column == 0) {
-        result = strcmp(a.title, b.title);
+        result = strcmp(a->title, b->title);
     }
     // city
     else if (column == 1) {
-        result = strcmp(a.city, b.city);
+        result = strcmp(a->city, b->city);
     }
     // cost for two
     else if (column == 2) {
-        result = (a.cost_for_two > b.cost_for_two) - (a.cost_for_two < b.cost_for_two);
+        result = (a->cost_for_two > b->cost_for_two) - (a->cost_for_two < b->cost_for_two);
     }
     // currency
     else if (column == 3) {
-        result = strcmp(a.currency, b.currency);
+        result = strcmp(a->currency, b->currency);
     }
     // price range
     else if (column == 4) {
-        result = (a.price_range > b.price_range) - (a.price_range < b.price_range);
+        result = (a->price_range > b->price_range) - (a->price_range < b->price_range);
     }
     // rating
     else if (column == 5) {
-        result = (a.rating > b.rating) - (a.rating < b.rating);
+        result = (a->rating > b->rating) - (a->rating < b->rating);
     }
     // rating text
     else if (column == 6) {
-        result = strcmp(a.rating_text, b.rating_text);
+        result = strcmp(a->rating_text, b->rating_text);
     }
     // votes
     else if (column == 7) {
-        result = (a.votes > b.votes) - (a.votes < b.votes);
+        result = (a->votes > b->votes) - (a->votes < b->votes);
     }
 
     return ascending ? result : -result;
@@ -124,7 +124,7 @@ int main(int) {
         return 1;
     }
 
-    struct Restaurant restaurant_locations[TOTAL_ROWS];
+    struct Restaurant *restaurant_locations = malloc(sizeof(struct Restaurant) * TOTAL_ROWS);
 
     fscanf(fp, "%*[^\n]\n");
     
@@ -162,12 +162,14 @@ int main(int) {
     // must be positive integer per case study
     if (input < 0) {
         printf("ERROR: input must be a positive integer\n");
+        free(restaurant_locations);
         return 1;
     }
 
     // exit
     if (input == 5) {
         printf("Exiting...\n");
+        free(restaurant_locations);
         return 0;
     }
 
@@ -180,11 +182,13 @@ int main(int) {
 
         if (number_of_rows > TOTAL_ROWS) {
             printf("ERROR: out of bounds\n");
+            free(restaurant_locations);
             return -1;
         }
         
         if (number_of_rows < 0) {
             printf("ERROR: must be a positive integer\n");
+            free(restaurant_locations);
             return -1;
         }
 
@@ -200,6 +204,7 @@ int main(int) {
             || header_index == 7
         ) {
             printf("ERROR: int or float type column are not supported");
+            free(restaurant_locations);
             return 1;
         }
 
@@ -211,7 +216,7 @@ int main(int) {
 
         // printf("column: %s, query_value: %s\n", column, query_value);
 
-        struct Restaurant filtered_restaurant[TOTAL_ROWS];
+        struct Restaurant *filtered_restaurant = malloc(sizeof(struct Restaurant) * TOTAL_ROWS);
 
         int filtered_count = 0;
 
@@ -239,6 +244,7 @@ int main(int) {
         }
 
         display_data(filtered_restaurant, filtered_count);
+        free(filtered_restaurant);
     }
     else if (input == 3) {
         int header_index = choose_column_index();
@@ -254,7 +260,7 @@ int main(int) {
             && strcmp(sort_option, "desc") != 0
         );
 
-        struct Restaurant sorted_restaurant[TOTAL_ROWS];
+        struct Restaurant *sorted_restaurant = malloc(sizeof(struct Restaurant) * TOTAL_ROWS);
 
         for (int i = 0; i < TOTAL_ROWS; i++) {
             sorted_restaurant[i] = restaurant_locations[i];
@@ -266,8 +272,8 @@ int main(int) {
         for (int i = 0; i < TOTAL_ROWS - 1; i++) {
             for (int j = i + 1; j < TOTAL_ROWS; j++) {
                 if (compare_restaurants(
-                    sorted_restaurant[i],
-                    sorted_restaurant[j],
+                    &sorted_restaurant[i],
+                    &sorted_restaurant[j],
                     header_index, sort_ascending) > 0
                 ) {
                     struct Restaurant temp = sorted_restaurant[i];
@@ -278,6 +284,7 @@ int main(int) {
         }
 
         display_data(sorted_restaurant, TOTAL_ROWS);
+        free(sorted_restaurant);
     }
     // export
     else if (input == 4) {
@@ -295,6 +302,7 @@ int main(int) {
 
         if (fexport == NULL) {
             printf("ERROR: cannot open %s\n", filename);
+            free(restaurant_locations);
             return 1;
         }
 
@@ -315,4 +323,6 @@ int main(int) {
 
         fclose(fexport);
     }
+
+    free(restaurant_locations);
 }
