@@ -19,5 +19,30 @@ foreach(comp_dir ${COMP_DIRS})
   if(EXISTS "${main_source}")
     add_executable("${comp_dir}" ${comp_sources})
     target_include_directories("${comp_dir}" PRIVATE "${CMAKE_SOURCE_DIR}/${comp_dir}")
+
+    set(target_output_dir "${CMAKE_BINARY_DIR}/${comp_dir}")
+    set_target_properties("${comp_dir}" PROPERTIES
+      RUNTIME_OUTPUT_DIRECTORY "${target_output_dir}"
+    )
+
+    set(prepare_output_script "${CMAKE_BINARY_DIR}/cmake/prepare_${comp_dir}_output.cmake")
+    file(MAKE_DIRECTORY "${CMAKE_BINARY_DIR}/cmake")
+    file(WRITE "${prepare_output_script}"
+      "if(EXISTS \"${target_output_dir}\" AND NOT IS_DIRECTORY \"${target_output_dir}\")\n"
+      "  file(REMOVE \"${target_output_dir}\")\n"
+      "endif()\n"
+      "file(MAKE_DIRECTORY \"${target_output_dir}\")\n"
+    )
+
+    add_custom_command(TARGET "${comp_dir}" PRE_LINK
+      COMMAND "${CMAKE_COMMAND}" -P "${prepare_output_script}"
+    )
+
+    add_custom_command(TARGET "${comp_dir}" POST_BUILD
+      COMMAND "${CMAKE_COMMAND}" -E copy_directory
+              "${CMAKE_SOURCE_DIR}/${comp_dir}"
+              "${target_output_dir}"
+      COMMENT "Copying ${comp_dir} assets to ${target_output_dir}"
+    )
   endif()
 endforeach()
