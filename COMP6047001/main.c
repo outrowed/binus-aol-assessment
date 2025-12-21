@@ -101,8 +101,10 @@ int choose_column_index() {
     return header_index;
 }
 
+// check from restaurant.csv
 const int TOTAL_ROWS = 7369;
 
+// grabbed from restaurant.csv
 const char* HEADERS[8] = {
     "Restaurant Name",
     "City",
