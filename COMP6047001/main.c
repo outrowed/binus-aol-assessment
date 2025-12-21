@@ -286,6 +286,7 @@ int main(int) {
         printf("File name: ");
         scanf("%[^\n]", filename); getchar();
 
+        // check if char size is safe when concatenating with ".csv" string
         if (strlen(filename) + 4 < 100) {
             strcat(filename, ".csv");
         }
