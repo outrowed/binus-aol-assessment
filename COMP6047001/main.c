@@ -124,6 +124,7 @@ int main(int) {
         return 1;
     }
 
+    // use heap allocation because 1MB stack memory limit imposed by Windows systems
     struct Restaurant *restaurant_locations = malloc(sizeof(struct Restaurant) * TOTAL_ROWS);
 
     fscanf(fp, "%*[^\n]\n");
