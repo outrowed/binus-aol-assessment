@@ -139,6 +139,8 @@ int main(int)
         count_row++;
     }
 
+    fclose(fp);
+
     printf("What do you want to do?\n");
     printf("1. Display data\n");
     printf("2. Search data\n");
