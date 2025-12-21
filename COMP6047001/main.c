@@ -127,6 +127,15 @@ int main(int)
             }
         }
 
+        if (header_index == 2
+            || header_index == 4
+            || header_index == 5
+            || header_index == 7
+        ) {
+            printf("ERROR: int or float type column are not supported");
+            return 1;
+        }
+
         char query_value[101];
 
         printf("What data do you want to find? ");
@@ -159,10 +168,6 @@ int main(int)
             else if (header_index == 6 && strcmp(restaurant_locations[i].rating_text, query_value) == 0) {
                 filtered_restaurant[filtered_count] = restaurant_locations[i];
                 filtered_count++;
-            }
-            // not char type
-            else {
-                printf("ERROR: char type unsupported");
             }
         }
 
