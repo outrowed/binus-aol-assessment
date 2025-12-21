@@ -13,6 +13,21 @@ struct Restaurant {
     int votes;
 };
 
+// check from restaurant.csv
+const int TOTAL_ROWS = 7369;
+
+// grabbed from restaurant.csv
+const char* HEADERS[8] = {
+    "Restaurant Name",
+    "City",
+    "Cost for two",
+    "Currency",
+    "Price range",
+    "Rating",
+    "Rating text",
+    "Votes"
+};
+
 int compare_restaurants(struct Restaurant a, struct Restaurant b, int column, int ascending) {
     int result = 0;
 
@@ -100,21 +115,6 @@ int choose_column_index() {
 
     return header_index;
 }
-
-// check from restaurant.csv
-const int TOTAL_ROWS = 7369;
-
-// grabbed from restaurant.csv
-const char* HEADERS[8] = {
-    "Restaurant Name",
-    "City",
-    "Cost for two",
-    "Currency",
-    "Price range",
-    "Rating",
-    "Rating text",
-    "Votes"
-};
 
 int main(int) {
     FILE* fp = fopen("./restaurant.csv", "r");
