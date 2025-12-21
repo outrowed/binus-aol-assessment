@@ -81,7 +81,7 @@ void display_data(struct Restaurant restaurant_locations[], int number_of_rows) 
     );
 
     for (int i = 0; i < number_of_rows; i++) {
-        printf("%-25s %-18s %10d %-20s %6d %6f %-12s %6d\n",
+        printf("%-25s %-18s %10d %-20s %6d %6.1f %-12s %6d\n",
             restaurant_locations[i].title,
             restaurant_locations[i].city,
             restaurant_locations[i].cost_for_two,
@@ -299,7 +299,7 @@ int main(int) {
         }
 
         for (int i = 0; i < TOTAL_ROWS; i++) {
-            fprintf(fexport, "%s,%s,%d,%s,%d,%f,%s,%d\n",
+            fprintf(fexport, "%s,%s,%d,%s,%d,%.1f,%s,%d\n",
                 restaurant_locations[i].title,
                 restaurant_locations[i].city,
                 restaurant_locations[i].cost_for_two,
