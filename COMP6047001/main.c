@@ -13,6 +13,45 @@ struct Restaurant {
     int votes;
 };
 
+int compare_restaurants(struct Restaurant a, struct Restaurant b, int column, int ascending) {
+    int result = 0;
+
+    // restaurant name
+    if (column == 0) {
+        result = strcmp(a.title, b.title);
+    }
+    // city
+    else if (column == 1) {
+        result = strcmp(a.city, b.city);
+    }
+    // cost for two
+    else if (column == 2) {
+        result = (a.cost_for_two > b.cost_for_two) - (a.cost_for_two < b.cost_for_two);
+    }
+    // currency
+    else if (column == 3) {
+        result = strcmp(a.currency, b.currency);
+    }
+    // price range
+    else if (column == 4) {
+        result = (a.price_range > b.price_range) - (a.price_range < b.price_range);
+    }
+    // rating
+    else if (column == 5) {
+        result = (a.rating > b.rating) - (a.rating < b.rating);
+    }
+    // rating text
+    else if (column == 6) {
+        result = strcmp(a.rating_text, b.rating_text);
+    }
+    // votes
+    else if (column == 7) {
+        result = (a.votes > b.votes) - (a.votes < b.votes);
+    }
+
+    return ascending ? result : -result;
+}
+
 void display_data(struct Restaurant restaurant_locations[], int number_of_rows) {
     printf(
         "%-25s %-18s %10s %-20s %6s %6s %-12s %6s\n",
@@ -42,6 +81,17 @@ void display_data(struct Restaurant restaurant_locations[], int number_of_rows) 
 }
 
 const int TOTAL_ROWS = 7369;
+
+const char* HEADERS[8] = {
+    "Restaurant Name",
+    "City",
+    "Cost for two",
+    "Currency",
+    "Price range",
+    "Rating",
+    "Rating text",
+    "Votes"
+};
 
 int main(int)
 {
@@ -79,16 +129,19 @@ int main(int)
     printf("Your choice: ");
     scanf("%d", &input); getchar();
 
+    // must be positive integer per case study
     if (input < 0) {
         printf("ERROR: input must be a positive integer\n");
         return 1;
     }
 
+    // exit
     if (input == 5) {
         printf("Exiting...\n");
         return 0;
     }
 
+    // display data
     if (input == 1) {
         int number_of_rows = 0;
 
@@ -97,18 +150,8 @@ int main(int)
 
         display_data(restaurant_locations, number_of_rows);
     }
+    // search data
     else if (input == 2) {
-        char* headers[8] = {
-            "Restaurant Name",
-            "City",
-            "Cost for two",
-            "Currency",
-            "Price range",
-            "Rating",
-            "Rating text",
-            "Votes"
-        };
-
         char column[101];
 
         int found = 0;
@@ -120,7 +163,7 @@ int main(int)
             scanf("%[^\n]", column); getchar();
             
             for (int i = 0; i < 8; i++) {
-                if (strcmp(headers[i], column) == 0) {
+                if (strcmp(HEADERS[i], column) == 0) {
                     found = 1;
                     header_index = i;
                 }
@@ -172,5 +215,55 @@ int main(int)
         }
 
         display_data(filtered_restaurant, filtered_count);
+    }
+    else if (input == 3) {
+        char column[101];
+
+        int found = 0;
+        int header_index = 0;
+
+        while (found == 0) {
+            printf("Choose column: ");
+
+            scanf("%[^\n]", column); getchar();
+            
+            for (int i = 0; i < 8; i++) {
+                if (strcmp(HEADERS[i], column) == 0) {
+                    found = 1;
+                    header_index = i;
+                }
+            }
+        }
+
+        char sort_option[5];
+
+        do {
+            printf("Sort ascending (asc) or descending (desc)? ");
+    
+            scanf("%[^\n]", sort_option); getchar();
+        } while (
+            strcmp(sort_option, "asc") != 0
+            && strcmp(sort_option, "desc") != 0
+        );
+
+        struct Restaurant sorted_restaurant[TOTAL_ROWS];
+
+        for (int i = 0; i < count_row; i++) {
+            sorted_restaurant[i] = restaurant_locations[i];
+        }
+
+        int sort_ascending = strcmp(sort_option, "asc") == 0;
+
+        // alphabetical / numerical sorting
+        for (int i = 0; i < count_row - 1; i++) {
+            for (int j = i + 1; j < count_row; j++) {
+                if (compare_restaurants(sorted_restaurant[i], sorted_restaurant[j], header_index, sort_ascending) > 0) {
+                    struct Restaurant temp = sorted_restaurant[i];
+                    sorted_restaurant[i] = sorted_restaurant[j];
+                    sorted_restaurant[j] = temp;
+                }
+            }
+        }
+        display_data(sorted_restaurant, count_row);
     }
 }
