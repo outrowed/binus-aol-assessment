@@ -126,7 +126,7 @@ int main(int) {
     struct Restaurant restaurant_locations[TOTAL_ROWS];
 
     fscanf(fp, "%*[^\n]\n");
-
+    
     int count_row = 0;
 
     while (
@@ -176,6 +176,16 @@ int main(int) {
 
         printf("Number of rows: ");
         scanf("%d", &number_of_rows); getchar();
+
+        if (number_of_rows > TOTAL_ROWS) {
+            printf("ERROR: out of bounds\n");
+            return -1;
+        }
+        
+        if (number_of_rows < 0) {
+            printf("ERROR: must be a positive integer\n");
+            return -1;
+        }
 
         display_data(restaurant_locations, number_of_rows);
     }
