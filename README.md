@@ -1,4 +1,4 @@
-# azza-proj
+# BINUS AOL Assessment
 
 ## Requirements
 
